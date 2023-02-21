@@ -7,6 +7,7 @@ namespace APIClientDogs
     {
         [JsonPropertyName("message")]
         public string[] Message { get; set; }
+
         [JsonPropertyName("status")]
         public string Status { get; set; }
     }

@@ -40,16 +40,26 @@ namespace APIClientDogs
             static async Task GetBreeds(string dogbreed)
             {
                 var client = new HttpClient();
+
                 var url = $"https://dog.ceo/api/breed/{dogbreed}/images";
+
                 var responseBodyAsStream = await client.GetStreamAsync(url);
+
                 Response messageObj = await JsonSerializer.DeserializeAsync<Response>(responseBodyAsStream);
-                var responseObj = messageObj.Message;
+                var responseObj = messageObj.Message[0];
+                for (int i = 1; i < messageObj.Message.Length; i++)
+                {
+                    responseObj += $", {messageObj.Message[i]}";
+                }
+
                 var status = messageObj.Status;
+
+                Console.WriteLine($"Message: {responseObj}");
                 Console.WriteLine($"Status: {status}");
-                Console.WriteLine($"Message: {responseObj[0]}");
+
                 // //Table Formatting
-                // var table = new ConsoleTable("Message", "Status");
-                // table.AddRow(messageObj);
+                // var table = new ConsoleTable("Image", "Success");
+                // table.AddRow(responseObj, status);
                 // table.Write();
 
             }
